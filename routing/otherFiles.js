@@ -4,6 +4,10 @@ module.exports = (app, path) => {
         res.sendFile(path.join(__dirname, "../public/reset.css"))
     })
 
+    app.get("/news.jpg", (req, res) => {
+        res.sendFile(path.join(__dirname, "../public/news.jpg"))
+    })
+
     app.get("/news2.jpg", (req, res) => {
         res.sendFile(path.join(__dirname, "../public/news2.jpg"))
     })

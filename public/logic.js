@@ -4,7 +4,7 @@ $.get("/articles", (info) => {
         var mainDiv = $("<div>");
         var title = $(`<p id='title${+v + 1}' class='title'>`).text(info[v].title);
         var aTag = $(`<a id='art${+v + 1}' class='forA' href='${info[v].href}' target="_blank" >`).text("Click here to see full atricle");
-        var button = $(`<button onclick='saveArticle(${+v})' class='toSave'>`).text("Save Article");
+        var button = $(`<button onclick="saveArticle('${info[v].title}', '${info[v].href}');" class='toSave'>`).text("Save Article");
         var hr = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
         mainDiv.append(title, aTag, button, hr);
         art.append(mainDiv);
@@ -25,11 +25,10 @@ function renderArticles(){
     var saveArt = $("#savedArticles");
     saveArt.empty();
     for(let v in allArticles){
-        console.log(allArticles[v].num)
         var mainDiv = $("<div>");
-        var title = $(`<p id='savedTitle${allArticles[v].num}' class='title'>`).text(allArticles[v].title);
-        var aTag = $(`<a id='aavedArt${allArticles[v].num}' class='forA' href='${allArticles[v].href}' target="_blank" >`).text("Click here to see full atricle");
-        var buttonForComments = $(`<button onclick='commentArticle(${allArticles[v].num})' class='toSave'>`).text("Write a Comment");
+        var title = $(`<p id='savedTitle${allArticles[v].title}' class='title'>`).text(allArticles[v].title);
+        var aTag = $(`<a id='aavedArt${allArticles[v].title}' class='forA' href="${allArticles[v].href}" target="_blank" >`).text("Click here to see full atricle");
+        var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v].title}')" class='toSave'>`).text("Write a Comment");
         var buttonForDelete = $(`<button onclick='deleteArticle(${+v + 1})' class='toSave'>`).text("Delete Article");
         var hr = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
         mainDiv.append(title, aTag, buttonForDelete, buttonForComments, hr);
@@ -37,14 +36,10 @@ function renderArticles(){
     }
 }
 
-function saveArticle(num){
-
-    var titleName = $(`#title${num}`).text();
-    var href = $(`#art${num}`).attr("href");
+function saveArticle(title, href){
 
     var send = {
-        num,
-        title: titleName,
+        title,
         href
     }
 
@@ -69,9 +64,9 @@ function deleteArticle(numx){
     renderArticles();
 }
 
-function commentArticle(numx){
+function commentArticle(title){
     console.log(allArticles);
-    let temp = allArticles.filter( ar => ar.num == numx )
+    let temp = allArticles.filter( ar => ar.title == title )
     console.log(temp)
     $("#modal-title").text(temp[0].title)
     $("#myModal").css("display", "block")
