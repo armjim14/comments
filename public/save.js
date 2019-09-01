@@ -1,11 +1,9 @@
-var article = [];
-
 if (localStorage.getItem('articles') == null){
-    null
+    console.log("no work");
 } else {
     renderArticles();
 }
 
 function renderArticles(){
-    alert("...");
+    console.log(localStorage.getItem('articles'))
 }

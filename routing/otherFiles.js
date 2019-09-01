@@ -16,4 +16,8 @@ module.exports = (app, path) => {
         res.sendFile(path.join(__dirname, "../public/logic.js"))
     })
 
+    app.get("/save.js", (req, res) => {
+        res.sendFile(path.join(__dirname, "../public/save.js"))
+    })
+
 }

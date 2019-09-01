@@ -29,7 +29,7 @@ module.exports = (app) => {
                 fin.push({title: info, href: send2[i]})
             })
 
-            console.log(fin);
+            // console.log(fin);
             res.json(fin);
 
         })
