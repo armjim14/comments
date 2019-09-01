@@ -1,0 +1,63 @@
+body {
+    background-color:rgb(87, 87, 87);
+}
+
+header {
+    width: 100%;
+    height: 85px;
+    background-color: #333;
+    border-bottom: black solid 2px;
+}
+
+h1 {
+    width: 45%;
+    float: left;
+    padding: 15px;
+    font-size: 40px;
+    color: white;
+}
+h1:hover {
+    cursor: pointer;
+}
+
+#middle-section {
+    float: left;
+    width: 50%;
+    text-align: right;
+    padding-top: 20px;
+}
+
+a {
+    color: white;
+    font-size: 28px;
+    padding-left: 15px;
+}
+
+section {
+    width: 100%;
+}
+
+img {
+    width: 100%;
+    height: 350px;
+}
+
+.title {
+    font-size: 20px;
+    color: white;
+    padding-left: 10px;
+}
+
+.forA {
+    font-size: 20px;
+}
+
+.forDiv {
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.toSave {
+    float: right;
+    margin-right: 20px;
+}
