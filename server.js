@@ -1,15 +1,21 @@
 var express = require("express");
 var path = require("path");
 var logger = require("morgan");
+var mongoose = require("mongoose");
 
 var app = express();
 
-require("./routing/routes.js")(app);
-require("./routing/otherFiles.js")(app, path);
+var db = require("./modles");
 
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+require("./routing/cheerio.js")(app);
+require("./routing/ApiRoutes.js")(app, db);
+require("./routing/otherFiles.js")(app, path);
+
+mongoose.connect("mongodb://localhost/comments", { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"))

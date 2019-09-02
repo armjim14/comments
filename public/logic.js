@@ -64,14 +64,33 @@ function deleteArticle(numx){
     renderArticles();
 }
 
+// for modal
 function commentArticle(title){
-    console.log(allArticles);
     let temp = allArticles.filter( ar => ar.title == title )
-    console.log(temp)
     $("#modal-title").text(temp[0].title)
+
+    $.get("/api/comments", (data) => {
+        for(let v in data){
+            console.log(data[v])
+            // var p = $("<p>").text()
+        }
+    })
+
     $("#myModal").css("display", "block")
 }
 
 $("#closex").on("click", () => {
     $("#myModal").css("display", "none")
+})
+// end modal
+
+$("#submitComment").on("click", () => {
+    var sendComment = {
+        comment: $("#commentWritten").val()
+    }
+    console.log(sendComment)
+    $.post("/api/submit/comments", sendComment)
+    .then(() => {
+        console.log("you good")
+    })
 })
