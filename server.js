@@ -26,7 +26,7 @@ app.get("/saved/articles", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/save.html"))
 })
 
-var PORT = 3000 || process.env.PORT;
+var PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log("listening!");
