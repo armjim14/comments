@@ -19,7 +19,7 @@ module.exports = (app, db) => {
                         }
                     }
                     if ( run ){
-                        db.articles.create({title, href, comments: []})
+                        db.articles.create({title, href, comments: [], change: true})
                         .then((data) => {
                             return res.json(data)
                         })

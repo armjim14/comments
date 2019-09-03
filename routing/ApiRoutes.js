@@ -1,8 +1,33 @@
+const cheerio = require("cheerio");
+const axios = require("axios")
+
+function changeHref(link, id, db){
+    axios.get(link)
+    .then((resp) =>{
+        var $ = cheerio.load(resp.data)
+        console.log($("a.styled-outbound-link").attr("href"))
+        db.articles.update({_id: id}, {$set: {change: false, href: $("a.styled-outbound-link").attr("href")}}, (err, data) => {
+            console.log("better")
+        })
+    })
+    .catch((err) => {
+        console.log("Here")
+        console.log(err)
+    })
+}
+
 function Apis(app, db){
 
     app.get("/api/all/articles", (req, res) => {
+        //styled-outbound-link
         var topTen = [];
         db.articles.find({}, (err, data) => {
+            var numb = (data.length > 10) ? 10 : data.length;
+            for(let i = 0; i < numb; i++){
+                if (data[i].change && data[i] !== "undefin"){
+                    changeHref(data[i].href, data[i]._id, db)
+                }
+            }
             for(let i = 0; i < 10; i++){
                 topTen.push(data[i])
             }
@@ -21,8 +46,6 @@ function Apis(app, db){
     })
 
     app.post("/commment/id/", (req, res) => {
-        console.log(req.body._id)
-        console.log(req.body.comment)
         db.articles.update({_id: req.body._id}, {$push: {comments: req.body.comment}} , (err, data) => {
             console.log(data)
         })

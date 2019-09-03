@@ -10,6 +10,9 @@ var articleSchema = new Schema({
   },
   comments: {
     type: Array
+  },
+  change: {
+    type: Boolean
   }
 });
 

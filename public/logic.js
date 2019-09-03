@@ -5,9 +5,6 @@ $.ajax({
 .done((resp) => {
     console.log(resp)
 })
-.fail((err) => {
-    console.log(err)
-})
 
 displayTopTen();
 
