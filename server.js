@@ -1,6 +1,6 @@
 var express = require("express");
 var path = require("path");
-var logger = require("morgan");
+// var logger = require("morgan");
 var mongoose = require("mongoose");
 
 var app = express();
@@ -10,7 +10,7 @@ var db = require("./modles");
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articles";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
