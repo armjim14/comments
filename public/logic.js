@@ -1,34 +1,35 @@
-$.get("/articles", (info) => {
-    var art = $("#here")
-    for(let v in info){
-        var mainDiv = $("<div>");
-        var title = $(`<p id='title${+v + 1}' class='title'>`).text(info[v].title);
-        var aTag = $(`<a id='art${+v + 1}' class='forA' href='${info[v].href}' target="_blank" >`).text("Click here to see full atricle");
-        var button = $(`<button onclick="saveArticle('${info[v].title}', '${info[v].href}');" class='toSave'>`).text("Save Article");
-        var hr = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
-        mainDiv.append(title, aTag, button, hr);
-        art.append(mainDiv);
-    }
+$.ajax({
+    url: "/articles",
+    method: "GET"
 })
+.done((resp) => {
+    console.log(resp)
+    console.log("line 8")
+    // displayTopTen();
+})
+.fail((err) => {
+    console.log(err)
+})
+
+displayTopTen();
 
 var allArticles = [];
 
-if (localStorage.getItem('articles') == null){
+if (localStorage.getItem('articles') == null) {
     console.log("no work");
 } else {
     allArticles = JSON.parse(localStorage.getItem('articles'));
     renderArticles();
 }
 
-
-function renderArticles(){
+function renderArticles() {
     var saveArt = $("#savedArticles");
     saveArt.empty();
-    for(let v in allArticles){
+    for (let v in allArticles) {
         var mainDiv = $("<div>");
-        var title = $(`<p id='savedTitle${allArticles[v].title}' class='title'>`).text(allArticles[v].title);
-        var aTag = $(`<a id='aavedArt${allArticles[v].title}' class='forA' href="${allArticles[v].href}" target="_blank" >`).text("Click here to see full atricle");
-        var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v].title}')" class='toSave'>`).text("Write a Comment");
+        var title = $(`<p id='savedTitle${allArticles[v]._id}' class='title'>`).text(allArticles[v].title);
+        var aTag = $(`<a id='aavedArt${allArticles[v]._id}' class='forA' href="${allArticles[v].href}" target="_blank" >`).text("Click here to see full atricle");
+        var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v]._id}')" class='toSave'>`).text("Write a Comment");
         var buttonForDelete = $(`<button onclick='deleteArticle(${+v + 1})' class='toSave'>`).text("Delete Article");
         var hr = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
         mainDiv.append(title, aTag, buttonForDelete, buttonForComments, hr);
@@ -36,46 +37,75 @@ function renderArticles(){
     }
 }
 
-function saveArticle(title, href){
+function displayTopTen() {
+    console.log("I am here")
+    $.ajax({
+        url: "/api/all/articles",
+        method: "GET"
+    })
+    .done((infox) => {
+        console.log(infox)
+        var info = infox.articles
+        var art = $("#here")
+        for (let v in info) {
+            var mainDiv = $("<div>");
+            // id='title${+v + 1}'  ---- id='art${+v + 1}'
+            var title = $(`<p class='title'>`).text(info[v].title);
+            var aTag = $(`<a class='forA' href='${info[v].href}' target="_blank" >`).text("Click here to see full atricle");
+            var button = $(`<button id='${info[v]._id}' onclick="saveArticle('${info[v]._id}');" class='toSave'>`).text("Save Article");
+            var href = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
+            mainDiv.append(title, aTag, button, href);
+            art.append(mainDiv);
+        }
+    })
+}
 
-    var send = {
-        title,
-        href
-    }
+function saveArticle(id) {
 
-    allArticles.push(send)
-    localStorage.setItem("articles", JSON.stringify(allArticles))
+    $.get(`/article/id/${id}`, (resp => {
+        console.log(resp)
+            var send = {
+                title: resp[0].title,
+                href: resp[0].href,
+                _id: resp[0]._id
+            }
+            allArticles.push(send)
+            localStorage.setItem("articles", JSON.stringify(allArticles))
+    }))
+
 }
 
 $("#returnHome").on("click", () => {
     window.location.href = "/";
 })
 
-function clearList(){
+function clearList() {
     allArticles = [];
     localStorage.setItem("articles", JSON.stringify(allArticles))
 
     $("#savedArticles").empty();
 }
 
-function deleteArticle(numx){
-    allArticles.splice(numx-1, 1);
+function deleteArticle(numx) {
+    allArticles.splice(numx - 1, 1);
     localStorage.setItem("articles", JSON.stringify(allArticles))
     renderArticles();
 }
 
 // for modal
-function commentArticle(title){
-    let temp = allArticles.filter( ar => ar.title == title )
-    $("#modal-title").text(temp[0].title)
+function commentArticle(id) {
 
-    $.get("/api/comments", (data) => {
-        for(let v in data){
-            console.log(data[v])
-            // var p = $("<p>").text()
+    $.get(`/article/id/${id}`, (data) => {
+        $("#allComments").empty();
+        var arr = data[0].comments;
+        console.log(data)
+        $("#modal-title").text(data[0].title);
+        $("#submitComment").attr("onclick", `sendComment('${id}')`)
+        for( let v in arr ){
+            var p = $("<p>").text(arr[v])
+            $("#allComments").append(p)
         }
     })
-
     $("#myModal").css("display", "block")
 }
 
@@ -84,13 +114,14 @@ $("#closex").on("click", () => {
 })
 // end modal
 
-$("#submitComment").on("click", () => {
+function sendComment(id) {
     var sendComment = {
+        _id: id,
         comment: $("#commentWritten").val()
     }
-    console.log(sendComment)
-    $.post("/api/submit/comments", sendComment)
-    .then(() => {
-        console.log("you good")
-    })
-})
+    console.log(sendComment, id);
+    $.post("/commment/id/", sendComment)
+        .then(() => {
+            console.log("you good")
+        })
+}

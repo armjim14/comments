@@ -11,11 +11,11 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-require("./routing/cheerio.js")(app);
+require("./routing/cheerio.js")(app, db);
 require("./routing/ApiRoutes.js")(app, db);
 require("./routing/otherFiles.js")(app, path);
 
-mongoose.connect("mongodb://localhost/comments", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/articles", { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"))

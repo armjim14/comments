@@ -1,24 +1,33 @@
 function Apis(app, db){
-    
-    app.get("/api/comments", (req, res) => {
-        db.articles.find({})
-            .populate("comments")
-            .then((data) => {
-                res.json(data)
-            }).catch((err) => {
-                console.log(err);
-                res.send("Something went wrong")
-            })
+
+    app.get("/api/all/articles", (req, res) => {
+        var topTen = [];
+        db.articles.find({}, (err, data) => {
+            // console.log(data)
+            for(let i = 0; i < 10; i++){
+                topTen.push(data[i])
+            }
+        })
+        .then((realData) => {
+            var send = {articles: topTen}
+            // console.log(send)
+            return res.json(send)
+        })
     })
 
-    app.post("/api/submit/comments", (req, res) => {
-        var comment = req.body.comment;
-        console.log(comment)
-        db.comments.create({comment})
-        .then((data) => {
-            return db.articles.findOneAndUpdate({}, { $push: { notes: data._id } }, { new: true });
+    app.get("/article/id/:id", (req, res) => {
+        db.articles.find({_id: (req.params.id)}, (err, data) => {
+            console.log(data);
+            return res.json(data)
         })
+    })
 
+    app.post("/commment/id/", (req, res) => {
+        console.log(req.body._id)
+        console.log(req.body.comment)
+        db.articles.update({_id: req.body._id}, {$push: {comments: req.body.comment}} , (err, data) => {
+            console.log(data)
+        })
     })
 
 }
