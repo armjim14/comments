@@ -4,8 +4,6 @@ $.ajax({
 })
 .done((resp) => {
     console.log(resp)
-    console.log("line 8")
-    // displayTopTen();
 })
 .fail((err) => {
     console.log(err)
@@ -38,13 +36,11 @@ function renderArticles() {
 }
 
 function displayTopTen() {
-    console.log("I am here")
     $.ajax({
         url: "/api/all/articles",
         method: "GET"
     })
     .done((infox) => {
-        console.log(infox)
         var info = infox.articles
         var art = $("#here")
         for (let v in info) {
@@ -63,7 +59,6 @@ function displayTopTen() {
 function saveArticle(id) {
 
     $.get(`/article/id/${id}`, (resp => {
-        console.log(resp)
             var send = {
                 title: resp[0].title,
                 href: resp[0].href,
@@ -98,7 +93,6 @@ function commentArticle(id) {
     $.get(`/article/id/${id}`, (data) => {
         $("#allComments").empty();
         var arr = data[0].comments;
-        console.log(data)
         $("#modal-title").text(data[0].title);
         $("#submitComment").attr("onclick", `sendComment('${id}')`)
         for( let v in arr ){
@@ -119,9 +113,10 @@ function sendComment(id) {
         _id: id,
         comment: $("#commentWritten").val()
     }
-    console.log(sendComment, id);
     $.post("/commment/id/", sendComment)
         .then(() => {
-            console.log("you good")
+            console.log("comment send")
         })
+        document.getElementById("commentWritten").value = "";
+        commentArticle(id)
 }

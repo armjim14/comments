@@ -65,6 +65,10 @@ img {
     width: 75%;
 }
 
+#allComments {
+    margin-bottom: 12px;
+}
+
 /* for modal popup */
 .modal {
     display: none; /* Hidden by default */

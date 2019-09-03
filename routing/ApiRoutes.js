@@ -3,14 +3,12 @@ function Apis(app, db){
     app.get("/api/all/articles", (req, res) => {
         var topTen = [];
         db.articles.find({}, (err, data) => {
-            // console.log(data)
             for(let i = 0; i < 10; i++){
                 topTen.push(data[i])
             }
         })
-        .then((realData) => {
+        .then(() => {
             var send = {articles: topTen}
-            // console.log(send)
             return res.json(send)
         })
     })
