@@ -23,7 +23,6 @@ if (localStorage.getItem('articles') == null) {
 function renderArticles() {
     var saveArt = $("#savedArticles");
     var wid = window.innerWidth;
-    console.log(window)
     saveArt.empty();
     for (let v in allArticles) {
         var mainDiv = $("<div>");
@@ -72,8 +71,16 @@ function saveArticle(id) {
                 href: resp[0].href,
                 _id: resp[0]._id
             }
-            allArticles.push(send)
-            localStorage.setItem("articles", JSON.stringify(allArticles))
+            var exist = allArticles.find((ar) => {
+                return (ar._id == id) ? ar._id : null
+            })
+            
+            if (exist){
+                null
+            } else {
+                allArticles.push(send)
+                localStorage.setItem("articles", JSON.stringify(allArticles))
+            }
     }))
 
 }
