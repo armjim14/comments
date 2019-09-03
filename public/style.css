@@ -61,6 +61,12 @@ img {
     float: right;
     margin-right: 20px;
 }
+
+.toSave2 {
+    float: left;
+    margin-left: 20px;
+}
+
 #commentWritten {
     width: 75%;
 }
@@ -106,4 +112,14 @@ img {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 620px){
+    h1 { font-size: 30px; width: 42%; }
+    a { font-size: 20px; }
+  }
+
+  @media screen and (max-width: 400px){
+    h1 { font-size: 28px; width: 36%; }
+    a { font-size: 20px; }
   }

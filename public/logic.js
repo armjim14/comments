@@ -22,13 +22,21 @@ if (localStorage.getItem('articles') == null) {
 
 function renderArticles() {
     var saveArt = $("#savedArticles");
+    var wid = window.innerWidth;
+    console.log(window)
     saveArt.empty();
     for (let v in allArticles) {
         var mainDiv = $("<div>");
         var title = $(`<p id='savedTitle${allArticles[v]._id}' class='title'>`).text(allArticles[v].title);
-        var aTag = $(`<a id='aavedArt${allArticles[v]._id}' class='forA' href="${allArticles[v].href}" target="_blank" >`).text("Click here to see full atricle");
-        var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v]._id}')" class='toSave'>`).text("Write a Comment");
-        var buttonForDelete = $(`<button onclick='deleteArticle(${+v + 1})' class='toSave'>`).text("Delete Article");
+        if (wid > 500 ){
+            var aTag = $(`<a id='aavedArt${allArticles[v]._id}' class='forA' href="${allArticles[v].href}" target="_blank" >`).text("Click here to see full atricle");
+            var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v]._id}')" class='toSave'>`).text("Write a Comment");
+            var buttonForDelete = $(`<button onclick='deleteArticle(${+v + 1})' class='toSave'>`).text("Delete Article");
+        } else {
+            var aTag = $(`<a id='aavedArt${allArticles[v]._id}' class='forA' href="${allArticles[v].href}" target="_blank" > Click here to see full atricle </a><br><br>`)
+            var buttonForComments = $(`<button onclick="commentArticle('${allArticles[v]._id}')" class='toSave2'> Write a Comment </button><br>`);
+            var buttonForDelete = $(`<button onclick='deleteArticle(${+v + 1})' class='toSave2'>`).text("Delete Article")
+        }
         var hr = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
         mainDiv.append(title, aTag, buttonForDelete, buttonForComments, hr);
         saveArt.append(mainDiv);
