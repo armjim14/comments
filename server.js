@@ -15,7 +15,8 @@ require("./routing/cheerio.js")(app, db);
 require("./routing/ApiRoutes.js")(app, db);
 require("./routing/otherFiles.js")(app, path);
 
-mongoose.connect("mongodb://localhost/articles", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articles";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"))
