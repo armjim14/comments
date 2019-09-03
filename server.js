@@ -7,6 +7,9 @@ var app = express();
 
 var db = require("./modles");
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articles";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -14,9 +17,6 @@ app.use(express.json());
 require("./routing/cheerio.js")(app, db);
 require("./routing/ApiRoutes.js")(app, db);
 require("./routing/otherFiles.js")(app, path);
-
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articles";
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"))
