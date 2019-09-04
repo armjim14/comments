@@ -22,13 +22,15 @@ function Apis(app, db){
         //styled-outbound-link
         var topTen = [];
         db.articles.find({}, (err, data) => {
-            var numb = (data.length > 10) ? 10 : data.length;
-            for(let i = 0; i < numb; i++){
-                if (data[i].change && data[i] !== "undefin"){
+            var startLoop = data.length - 1;
+            var numb = (data.length > 10) ? data.length - 11 : -1;
+            console.log(data[startLoop])
+            for(let i = startLoop; i > numb; i--){
+                if (data[i].change && data[i] !== "undefined"){
                     changeHref(data[i].href, data[i]._id, db)
                 }
             }
-            for(let i = 0; i < 10; i++){
+            for(let i = startLoop; i > numb; i--){
                 topTen.push(data[i])
             }
         })
