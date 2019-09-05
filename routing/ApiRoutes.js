@@ -18,8 +18,7 @@ function changeHref(link, id, db){
 
 function Apis(app, db){
 
-    app.get("/api/all/articles", (req, res) => {
-        //styled-outbound-link
+    app.get("/", (req, res) => {
         var topTen = [];
         db.articles.find({}, (err, data) => {
             var startLoop = data.length - 1;
@@ -36,7 +35,7 @@ function Apis(app, db){
         })
         .then(() => {
             var send = {articles: topTen}
-            return res.json(send)
+            return res.render("index", send)
         })
     })
 

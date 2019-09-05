@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
+var exh = require("express-handlebars");
 
 var app = express();
 
@@ -13,17 +14,15 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.engine("handlebars", exh({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 require("./routing/cheerio.js")(app, db);
 require("./routing/ApiRoutes.js")(app, db);
 require("./routing/otherFiles.js")(app, path);
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/index.html"))
-})
-
 app.get("/saved/articles", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/save.html"))
+    res.render("save");
 })
 
 var PORT = process.env.PORT || 3000;

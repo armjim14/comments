@@ -1,0 +1,35 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Scrapper</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>The Scrapper</h1>
+        <div id="middle-section">
+            <a href="/saved/articles">Saved Articles</a>
+        </div>
+    </header>
+
+    <section>
+        <img src="news.jpg" alt="Newspaper">
+    </section>
+
+    <article id="here">
+        {{#each articles}}
+            <div>
+                <p class="title">{{title}}</p>
+                <a class="forA" href="{{href}}" target="_blank">Click here to see full atricle</a>
+                <button id="{{_id}}" onclick="{{_id}}" class="toSave">Save Article</button>
+                <hr class="forDiv" style="border: darkgray 1.5px solid">
+            </div>
+        {{/each}}
+    </article>
+
+    <script src="logic.js"></script>
+</body>

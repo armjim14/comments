@@ -6,8 +6,6 @@ $.ajax({
     console.log(resp)
 })
 
-displayTopTen();
-
 var allArticles = [];
 
 if (localStorage.getItem('articles') == null) {
@@ -37,27 +35,6 @@ function renderArticles() {
         mainDiv.append(title, aTag, buttonForDelete, buttonForComments, hr);
         saveArt.append(mainDiv);
     }
-}
-
-function displayTopTen() {
-    $.ajax({
-        url: "/api/all/articles",
-        method: "GET"
-    })
-    .done((infox) => {
-        var info = infox.articles
-        var art = $("#here")
-        for (let v in info) {
-            var mainDiv = $("<div>");
-            // id='title${+v + 1}'  ---- id='art${+v + 1}'
-            var title = $(`<p class='title'>`).text(info[v].title);
-            var aTag = $(`<a class='forA' href='${info[v].href}' target="_blank" >`).text("Click here to see full atricle");
-            var button = $(`<button id='${info[v]._id}' onclick="saveArticle('${info[v]._id}');" class='toSave'>`).text("Save Article");
-            var href = $("<hr class='forDiv'>").css("border", "darkgray 1.5px solid");
-            mainDiv.append(title, aTag, button, href);
-            art.append(mainDiv);
-        }
-    })
 }
 
 function saveArticle(id) {
