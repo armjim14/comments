@@ -85,11 +85,22 @@ function commentArticle(id) {
         $("#modal-title").text(data[0].title);
         $("#submitComment").attr("onclick", `sendComment('${id}')`)
         for( let v in arr ){
-            var p = $("<p>").text(arr[v])
-            $("#allComments").append(p)
+            var commentDiv = $("<div>").css("width", "100%");
+            var p = $("<p>").text(arr[v]).css({"width": "80%", "float": "left"});
+            var deleteComment = $("<button>").text("Delete").attr("class", "singleComment");
+            commentDiv.append(p, deleteComment);
+            $("#allComments").append(commentDiv, $("<br>"));
         }
+        giveCommentId(id);
     })
     $("#myModal").css("display", "block")
+}
+
+function giveCommentId(id){
+    let temp = document.getElementsByClassName("singleComment");
+    for (let i = 0; i < temp.length; i++){
+        temp[i].setAttribute("onclick", `deleteSingleComment(${i}, '${id}')`);
+    }
 }
 
 $("#closex").on("click", () => {
@@ -108,4 +119,17 @@ function sendComment(id) {
         })
         document.getElementById("commentWritten").value = "";
         commentArticle(id)
+}
+
+function deleteSingleComment(commentId, id){
+    console.log(id)
+    $.ajax({
+        url: `/delete/comment/${id}/${commentId}`,
+        method: "DELETE"
+    })
+    .then(() => {
+        console.log("comment deleted");
+    })
+        commentArticle(id);
+        window.location.reload();
 }

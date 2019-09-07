@@ -52,6 +52,17 @@ function Apis(app, db){
         })
     })
 
+    app.delete("/delete/comment/:id/:commentId", (req, res) => {
+        db.articles.find({_id: req.params.id}, (err, data) => {
+            data[0].comments.splice(req.params.commentId, 1);
+            console.log(data[0].comments);    
+            db.articles.update({_id: req.params.id}, {$set: {comments: data[0].comments}}, (err, data) => {
+                if (err) { console.log(err) }
+                console.log(data);
+            })
+        })
+    })
+
 }
 
 module.exports = Apis;
